@@ -40,20 +40,15 @@ def keys_for_vector(vector)
 
     score = vector.sum do |target|
       candidate = (byte ^ target.to_i)
-      #puts "Candidate #{candidate.chr.downcase}"
       value = FREQUENCY[candidate.chr.downcase.to_sym].to_f
-      #puts value
       value
     end
-    #puts "Byte #{byte}: score #{score}"
 
     acc[byte] = score if score > 0
     acc
   end
 end
 
-# +possible_keys+ is now an array of hashes with 16 elements ( one for each byte in the block )
-# Each hash is the frequency table for which key produced how many printable characters
 def probably_key_for_block(block_vectors)
   possible_keys = block_vectors.map { |vector| keys_for_vector(vector) }
   possible_keys.map { |table| table.max_by { |k,v| v.to_i }&.first }
